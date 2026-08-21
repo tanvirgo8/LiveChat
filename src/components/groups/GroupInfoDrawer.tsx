@@ -144,17 +144,17 @@ export const GroupInfoDrawer: React.FC<GroupInfoDrawerProps> = ({
         aria-modal="true"
         aria-labelledby="group-drawer-title"
         onClick={onClose}
-        className="fixed inset-0 z-50 flex justify-end bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-150"
+        className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-150"
       >
         <div
-          className="flex h-full w-full max-w-md flex-col border-l border-slate-800 bg-slate-900 shadow-2xl select-none"
+          className="flex h-full w-full max-w-md flex-col border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-2xl select-none transition-colors duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-800 p-4">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 p-4">
             <div className="flex items-center gap-2.5">
-              <Users className="h-5 w-5 text-indigo-400" />
-              <h2 id="group-drawer-title" className="text-base font-bold text-white">
+              <Users className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              <h2 id="group-drawer-title" className="text-base font-bold text-slate-900 dark:text-white">
                 Group Details
               </h2>
             </div>

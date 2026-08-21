@@ -86,29 +86,29 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
       aria-modal="true"
       aria-labelledby="add-members-title"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm animate-in fade-in duration-150"
     >
       <div
-        className="flex w-full max-w-md flex-col rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl"
+        className="flex w-full max-w-md max-h-[90vh] flex-col rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-2xl transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-600/20 text-indigo-400 ring-1 ring-indigo-500/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-600/10 dark:bg-indigo-600/20 text-indigo-600 dark:text-indigo-400 ring-1 ring-indigo-500/30">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <h2 id="add-members-title" className="text-base font-bold text-white">
+              <h2 id="add-members-title" className="text-base font-bold text-slate-900 dark:text-white">
                 Add Members
               </h2>
-              <p className="text-xs text-slate-400">{groupConversation.name}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{groupConversation.name}</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-2 text-slate-400 hover:bg-slate-800 hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />

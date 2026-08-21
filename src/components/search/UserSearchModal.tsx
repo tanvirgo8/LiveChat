@@ -55,7 +55,7 @@ export const UserSearchModal: React.FC<UserSearchModalProps> = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm animate-in fade-in duration-150"
     >
       <div
-        className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white dark:bg-slate-900 shadow-2xl ring-1 ring-slate-200 dark:ring-white/10 transition-colors duration-200"
+        className="relative w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden rounded-3xl bg-white dark:bg-slate-900 shadow-2xl ring-1 ring-slate-200 dark:ring-white/10 transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

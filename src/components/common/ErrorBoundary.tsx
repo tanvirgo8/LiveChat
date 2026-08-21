@@ -36,12 +36,12 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-950 p-6 text-center select-none">
-          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-red-500/10 text-red-400 ring-1 ring-red-500/20 shadow-xl">
+        <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-6 text-center select-none transition-colors duration-200">
+          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-red-500/10 text-red-500 dark:text-red-400 ring-1 ring-red-500/20 shadow-xl">
             <AlertCircle className="h-8 w-8" />
           </div>
-          <h1 className="mt-4 text-lg font-bold text-white">Something went wrong</h1>
-          <p className="mt-1.5 max-w-sm text-xs text-slate-400">
+          <h1 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">Something went wrong</h1>
+          <p className="mt-1.5 max-w-sm text-xs text-slate-600 dark:text-slate-400">
             An unexpected error occurred in the application. Please try reloading the page to restore your session.
           </p>
           <button

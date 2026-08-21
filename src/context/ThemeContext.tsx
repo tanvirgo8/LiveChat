@@ -22,7 +22,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return savedTheme;
       }
     }
-    return 'dark';
+    return 'light';
   });
 
   // Update <html> class and localStorage when theme changes

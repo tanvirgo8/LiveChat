@@ -215,9 +215,8 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
     <div className="flex h-screen w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Sidebar Panel (Desktop: w-80/w-96, Mobile: full width if activeMobileView === 'list') */}
       <div
-        className={`h-full shrink-0 ${
-          activeMobileView === 'list' ? 'flex w-full' : 'hidden'
-        } lg:flex lg:w-80 xl:w-96 flex-col`}
+        className={`h-full shrink-0 ${activeMobileView === 'list' ? 'flex w-full' : 'hidden'
+          } lg:flex lg:w-80 xl:w-96 flex-col`}
       >
         {/* Error Alert Bar if conversation fetching failed */}
         {conversationsError && (
@@ -254,9 +253,8 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
 
       {/* Main Active Chat Panel (Desktop: flex-1, Mobile: full width if activeMobileView === 'chat') */}
       <div
-        className={`h-full flex-1 ${
-          activeMobileView === 'chat' ? 'flex w-full' : 'hidden'
-        } lg:flex`}
+        className={`h-full flex-1 ${activeMobileView === 'chat' ? 'flex w-full' : 'hidden'
+          } lg:flex`}
       >
         <ChatPanel
           conversation={selectedConversation}

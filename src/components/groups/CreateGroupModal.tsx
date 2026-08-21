@@ -95,19 +95,19 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
       aria-modal="true"
       aria-labelledby="create-group-title"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm animate-in fade-in duration-150"
     >
       <div
-        className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-slate-900 shadow-2xl ring-1 ring-white/10"
+        className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white dark:bg-slate-900 shadow-2xl ring-1 ring-slate-200 dark:ring-white/10 transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 p-4">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 p-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600/20 text-purple-400 ring-1 ring-purple-500/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-600/10 dark:bg-purple-600/20 text-purple-600 dark:text-purple-400 ring-1 ring-purple-500/30">
               <Users className="h-5 w-5" />
             </div>
-            <h2 id="create-group-title" className="text-base font-bold text-white">
+            <h2 id="create-group-title" className="text-base font-bold text-slate-900 dark:text-white">
               Create New Group
             </h2>
           </div>

@@ -95,7 +95,7 @@ export default function LoginPage() {
             Welcome to LiveChat
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Real-time 1-to-1 & group messaging platform
+            Connect and chat with anyone instantly
           </p>
           <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-[11px] font-semibold text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/20">
             <ShieldCheck className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
@@ -186,8 +186,8 @@ export default function LoginPage() {
 
         {/* Footer Badge */}
         <div className="pt-2 text-center border-t border-slate-200 dark:border-slate-800/60">
-          <p className="text-[11px] text-slate-500">
-            Powered by Next.js & Socket.IO Real-Time Engine
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+            Secure • Real-time • Built for seamless communication
           </p>
         </div>
       </div>

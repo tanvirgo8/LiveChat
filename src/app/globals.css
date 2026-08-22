@@ -19,3 +19,10 @@ html, body {
 body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
+
+/* Prevent iOS auto-zoom on input focus on mobile devices */
+@media (max-width: 639px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}

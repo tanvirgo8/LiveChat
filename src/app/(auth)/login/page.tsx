@@ -224,7 +224,7 @@ export default function LoginPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   disabled={isSubmitting}
-                  className="block w-full rounded-2xl border-0 bg-slate-100/70 dark:bg-black/60 py-3.5 pl-11 pr-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 transition focus:bg-white dark:focus:bg-black focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 min-h-[44px]"
+                  className="block w-full rounded-2xl border-0 bg-slate-100/70 dark:bg-black/60 py-3.5 pl-11 pr-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 transition focus:bg-white dark:focus:bg-black focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 min-h-[44px]"
                 />
               </div>
             </div>
@@ -247,7 +247,7 @@ export default function LoginPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isSubmitting}
-                  className="block w-full rounded-2xl border-0 bg-slate-100/70 dark:bg-black/60 py-3.5 pl-11 pr-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 transition focus:bg-white dark:focus:bg-black focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 min-h-[44px]"
+                  className="block w-full rounded-2xl border-0 bg-slate-100/70 dark:bg-black/60 py-3.5 pl-11 pr-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 transition focus:bg-white dark:focus:bg-black focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 min-h-[44px]"
                 />
               </div>
             </div>

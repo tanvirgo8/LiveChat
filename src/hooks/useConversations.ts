@@ -2,18 +2,41 @@ import { useState, useEffect, useCallback } from 'react';
 import { Conversation, GetConversationsResponse, StartConversationResponse, LastMessage } from '@/types';
 import { apiClient, getErrorMessage } from '@/lib/api-client';
 
+const CONVERSATIONS_CACHE_KEY = 'livechat_cached_conversations';
+
 export function useConversations() {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // Initialize from cache if available for instant 0ms startup
+  const [conversations, setConversations] = useState<Conversation[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const cached = localStorage.getItem(CONVERSATIONS_CACHE_KEY);
+        if (cached) return JSON.parse(cached);
+      } catch {
+        // Fallback to empty list
+      }
+    }
+    return [];
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem(CONVERSATIONS_CACHE_KEY);
+      if (cached) return false;
+    }
+    return true;
+  });
+
   const [error, setError] = useState<string | null>(null);
 
   const fetchConversations = useCallback(async (): Promise<Conversation[]> => {
-    setIsLoading(true);
     setError(null);
     try {
       const response = await apiClient.get<GetConversationsResponse>('/conversations');
       const list = response.data?.data || [];
       setConversations(list);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(list));
+      }
       return list;
     } catch (err) {
       const msg = getErrorMessage(err);
@@ -24,14 +47,19 @@ export function useConversations() {
     }
   }, []);
 
+  // Background revalidation on startup
   useEffect(() => {
     let isMounted = true;
     apiClient
       .get<GetConversationsResponse>('/conversations')
       .then((res) => {
         if (isMounted) {
-          setConversations(res.data?.data || []);
+          const list = res.data?.data || [];
+          setConversations(list);
           setError(null);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(list));
+          }
         }
       })
       .catch((err) => {
@@ -53,20 +81,16 @@ export function useConversations() {
   const createDirectConversation = async (targetUserId: string): Promise<Conversation | null> => {
     setError(null);
     try {
-      // POST /conversations returns { _id, participants: string[], createdAt }
       const res = await apiClient.post<StartConversationResponse>('/conversations', {
         userId: targetUserId,
       });
 
       const newConvId = res.data._id;
-
-      // Re-fetch conversation list to get full participant details object
       const updatedList = await fetchConversations();
 
       const found = updatedList.find((c) => c._id === newConvId);
       if (found) return found;
 
-      // Fallback: search for direct conversation with targetUserId
       const foundByParticipant = updatedList.find(
         (c) => c.type === 'direct' && c.participant._id === targetUserId
       );
@@ -90,9 +114,13 @@ export function useConversations() {
       });
 
       const newGroup = response.data;
-      
-      // Update local state immediately & refresh list
-      setConversations((prev) => [newGroup, ...prev.filter((c) => c._id !== newGroup._id)]);
+      setConversations((prev) => {
+        const next = [newGroup, ...prev.filter((c) => c._id !== newGroup._id)];
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(next));
+        }
+        return next;
+      });
       return newGroup;
     } catch (err) {
       const msg = getErrorMessage(err);
@@ -101,9 +129,6 @@ export function useConversations() {
     }
   };
 
-  /**
-   * Updates local conversation lastMessage and moves conversation to top of list
-   */
   const updateConversationLastMessage = useCallback(
     (conversationId: string, lastMessage: LastMessage) => {
       setConversations((prev) => {
@@ -114,34 +139,45 @@ export function useConversations() {
         targetConv.lastMessage = lastMessage;
         targetConv.updatedAt = lastMessage.createdAt || new Date().toISOString();
 
-        // Move updated conversation to top of list
         const filtered = prev.filter((c) => c._id !== conversationId);
-        return [targetConv, ...filtered];
+        const next = [targetConv, ...filtered];
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(next));
+        }
+        return next;
       });
     },
     []
   );
 
-  /**
-   * Directly updates or adds a conversation received via conversation:updated socket event or group REST action
-   */
   const updateOrAddConversation = useCallback((updatedConv: Conversation) => {
     if (!updatedConv || !updatedConv._id) return;
 
     setConversations((prev) => {
       const exists = prev.some((c) => c._id === updatedConv._id);
+      let next: Conversation[];
       if (exists) {
-        return prev.map((c) => (c._id === updatedConv._id ? { ...c, ...updatedConv } : c));
+        next = prev.map((c) => (c._id === updatedConv._id ? { ...c, ...updatedConv } : c));
+      } else {
+        next = [updatedConv, ...prev];
       }
-      return [updatedConv, ...prev];
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(next));
+      }
+      return next;
     });
   }, []);
 
-  /**
-   * Removes a conversation locally (e.g. when current user leaves a group)
-   */
   const removeConversation = useCallback((conversationId: string) => {
-    setConversations((prev) => prev.filter((c) => c._id !== conversationId));
+    setConversations((prev) => {
+      const next = prev.filter((c) => c._id !== conversationId);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(CONVERSATIONS_CACHE_KEY, JSON.stringify(next));
+      }
+      return next;
+    });
   }, []);
 
   return {

@@ -4,9 +4,41 @@ import { apiClient, getErrorMessage } from '@/lib/api-client';
 
 const MESSAGES_LIMIT = 20;
 
+// In-memory & SessionStorage Message Cache Map for 0ms instant loading
+const memoryMessageCache = new Map<string, Message[]>();
+
+function getCachedMessages(conversationId: string): Message[] | null {
+  if (memoryMessageCache.has(conversationId)) {
+    return memoryMessageCache.get(conversationId) || null;
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = sessionStorage.getItem(`livechat_msg_cache_${conversationId}`);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        memoryMessageCache.set(conversationId, parsed);
+        return parsed;
+      }
+    } catch {
+      // Ignore sessionStorage error
+    }
+  }
+  return null;
+}
+
+function setCachedMessages(conversationId: string, messagesList: Message[]) {
+  memoryMessageCache.set(conversationId, messagesList);
+  if (typeof window !== 'undefined') {
+    try {
+      sessionStorage.setItem(`livechat_msg_cache_${conversationId}`, JSON.stringify(messagesList));
+    } catch {
+      // Ignore quota errors
+    }
+  }
+}
+
 /**
  * Normalizes REST or Socket.IO message payloads into a unified Message entity.
- * Handles `_id` vs `id` and ISO string vs numeric epoch timestamp.
  */
 export function normalizeMessage(raw: Message | SocketMessagePayload): Message {
   const messageId = raw._id || (raw as SocketMessagePayload).id || '';
@@ -57,7 +89,7 @@ export function useMessages() {
   const [error, setError] = useState<string | null>(null);
   const [sendMessageError, setSendMessageError] = useState<string | null>(null);
 
-  // Track currently active conversation ID to prevent stale fast-switching overwrites
+  // Track currently active conversation ID
   const activeConversationIdRef = useRef<string | null>(null);
 
   const fetchMessages = useCallback(async (conversationId: string) => {
@@ -70,22 +102,25 @@ export function useMessages() {
       return;
     }
 
-    // Set current active target
     activeConversationIdRef.current = conversationId;
-
-    // Immediately clear previous conversation messages to prevent flashing old data
-    setMessages([]);
-    setIsLoading(true);
     setError(null);
     setSendMessageError(null);
-    setHasMore(false);
+
+    // Instant Cache Check (0ms latency rendering)
+    const cached = getCachedMessages(conversationId);
+    if (cached && cached.length > 0) {
+      setMessages(cached);
+      setIsLoading(false);
+    } else {
+      setMessages([]);
+      setIsLoading(true);
+    }
 
     try {
       const response = await apiClient.get<GetMessagesResponse>(
         `/conversations/${conversationId}/messages?limit=${MESSAGES_LIMIT}`
       );
 
-      // Check if user switched to another conversation while waiting for this request
       if (activeConversationIdRef.current !== conversationId) {
         return;
       }
@@ -96,10 +131,14 @@ export function useMessages() {
       const sorted = deduplicateAndSortMessages(fetchedMessages);
       setMessages(sorted);
       setHasMore(more);
+      setCachedMessages(conversationId, sorted);
     } catch (err) {
       if (activeConversationIdRef.current === conversationId) {
         const msg = getErrorMessage(err);
-        setError(msg);
+        // Only set error if no cached messages are displayed
+        if (!cached || cached.length === 0) {
+          setError(msg);
+        }
       }
     } finally {
       if (activeConversationIdRef.current === conversationId) {
@@ -114,7 +153,6 @@ export function useMessages() {
       return;
     }
 
-    // Oldest message is at index 0 (sorted chronologically)
     const oldestMessageId = messages[0]._id;
     setIsLoadingOlder(true);
 
@@ -131,7 +169,11 @@ export function useMessages() {
       const more = Boolean(response.data?.hasMore);
 
       if (olderMessages.length > 0) {
-        setMessages((prev) => deduplicateAndSortMessages([...olderMessages, ...prev]));
+        setMessages((prev) => {
+          const merged = deduplicateAndSortMessages([...olderMessages, ...prev]);
+          setCachedMessages(activeId, merged);
+          return merged;
+        });
       }
       setHasMore(more);
     } catch (err) {
@@ -167,9 +209,12 @@ export function useMessages() {
       const serverMsg = response.data;
       const normalizedServerMsg = normalizeMessage(serverMsg);
 
-      // Verify conversation target is still active before local state insertion
       if (activeConversationIdRef.current === activeId) {
-        setMessages((prev) => deduplicateAndSortMessages([...prev, normalizedServerMsg]));
+        setMessages((prev) => {
+          const merged = deduplicateAndSortMessages([...prev, normalizedServerMsg]);
+          setCachedMessages(activeId, merged);
+          return merged;
+        });
       }
 
       return normalizedServerMsg;
@@ -182,9 +227,6 @@ export function useMessages() {
     }
   }, []);
 
-  /**
-   * Safely inserts an incoming real-time socket message into state if it belongs to the active conversation
-   */
   const addIncomingMessage = useCallback((incomingMessage: Message | SocketMessagePayload) => {
     if (!incomingMessage || (!incomingMessage._id && !(incomingMessage as SocketMessagePayload).id) || !incomingMessage.conversation) {
       return;
@@ -194,7 +236,11 @@ export function useMessages() {
     const activeId = activeConversationIdRef.current;
 
     if (activeId && normalized.conversation === activeId) {
-      setMessages((prev) => deduplicateAndSortMessages([...prev, normalized]));
+      setMessages((prev) => {
+        const merged = deduplicateAndSortMessages([...prev, normalized]);
+        setCachedMessages(activeId, merged);
+        return merged;
+      });
     }
   }, []);
 

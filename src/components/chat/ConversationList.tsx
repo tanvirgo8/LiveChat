@@ -34,9 +34,9 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   });
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <div className="flex flex-1 min-h-0 flex-col overflow-hidden">
       {/* Action Bar & Search Header */}
-      <div className="p-3 space-y-2.5 border-b border-slate-200/80 dark:border-slate-800/80">
+      <div className="shrink-0 p-3 space-y-2.5 border-b border-slate-200/80 dark:border-slate-800/80">
         <div className="flex items-center justify-between gap-2">
           <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Messages
@@ -77,7 +77,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
       </div>
 
       {/* Conversation Items List Container */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-1">
+      <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-1">
         {isLoading ? (
           <ConversationSkeleton />
         ) : filteredConversations.length === 0 ? (

@@ -175,11 +175,11 @@ export const MessageList: React.FC<MessageListProps> = ({
   }
 
   return (
-    <div className="relative flex flex-1 flex-col overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
+    <div className="relative flex flex-1 min-h-0 flex-col overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className="flex flex-1 flex-col overflow-y-auto p-4 space-y-2 select-text"
+        className="flex-1 min-h-0 overflow-y-auto px-3 py-4 sm:px-6 space-y-2"
       >
         {/* Top Pagination Control / Loading Indicator */}
         {hasMore && (

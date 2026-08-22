@@ -74,9 +74,9 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   };
 
   return (
-    <aside className="flex h-full w-full flex-col border-r border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl select-none transition-colors duration-200">
-      {/* Top Branding Header */}
-      <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800/80 p-4">
+    <aside className="flex h-full max-h-full w-full flex-col border-r border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl select-none transition-colors duration-200 overflow-hidden">
+      {/* Top Branding Header (Pinned) */}
+      <div className="shrink-0 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800/80 p-4">
         <div className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 ring-1 ring-white/20">
             <MessageSquare className="h-5 w-5" />
@@ -96,7 +96,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         <ThemeToggle />
       </div>
 
-      {/* Conversation List Container */}
+      {/* Conversation List Container (Scrollable Flex Item) */}
       <ConversationList
         conversations={conversations}
         selectedId={selectedId}
@@ -106,8 +106,8 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         onOpenGroupModal={onOpenGroupModal}
       />
 
-      {/* User Profile Footer Section */}
-      <div className="flex items-center justify-between border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-100/70 dark:bg-slate-950/70 p-3.5 backdrop-blur-md">
+      {/* User Profile Footer Section (Pinned to Bottom) */}
+      <div className="shrink-0 flex items-center justify-between border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-100/90 dark:bg-slate-950/90 p-3.5 backdrop-blur-md">
         <div className="flex items-center gap-3 min-w-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 text-xs font-extrabold text-indigo-700 dark:text-indigo-200 ring-1 ring-indigo-500/40 shadow-inner">
             {userInitials}
@@ -126,7 +126,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         <button
           type="button"
           onClick={onLogout}
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 transition-all hover:bg-red-500/20 hover:text-red-600 dark:hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-500 dark:text-slate-400 transition-all hover:bg-red-500/20 hover:text-red-600 dark:hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 shrink-0"
           title="Sign Out"
           aria-label="Sign Out"
         >

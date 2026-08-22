@@ -212,15 +212,16 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="flex h-[100dvh] max-h-[100dvh] w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Sidebar Panel (Desktop: w-80/w-96, Mobile: full width if activeMobileView === 'list') */}
       <div
-        className={`h-full shrink-0 ${activeMobileView === 'list' ? 'flex w-full' : 'hidden'
-          } lg:flex lg:w-80 xl:w-96 flex-col`}
+        className={`h-full max-h-full shrink-0 ${
+          activeMobileView === 'list' ? 'flex w-full' : 'hidden'
+        } lg:flex lg:w-80 xl:w-96 flex-col overflow-hidden`}
       >
         {/* Error Alert Bar if conversation fetching failed */}
         {conversationsError && (
-          <div className="flex items-center justify-between bg-red-500/10 px-4 py-2 ring-1 ring-red-500/20 text-xs text-red-300">
+          <div className="shrink-0 flex items-center justify-between bg-red-500/10 px-4 py-2 ring-1 ring-red-500/20 text-xs text-red-300">
             <div className="flex items-center gap-2">
               <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
               <span className="truncate">{conversationsError}</span>
@@ -253,8 +254,9 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
 
       {/* Main Active Chat Panel (Desktop: flex-1, Mobile: full width if activeMobileView === 'chat') */}
       <div
-        className={`h-full flex-1 ${activeMobileView === 'chat' ? 'flex w-full' : 'hidden'
-          } lg:flex`}
+        className={`h-full max-h-full flex-1 min-w-0 ${
+          activeMobileView === 'chat' ? 'flex w-full' : 'hidden'
+        } lg:flex flex-col overflow-hidden`}
       >
         <ChatPanel
           conversation={selectedConversation}

@@ -114,7 +114,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition"
+            className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition"
             aria-label="Close modal"
           >
             <X className="h-4 w-4" />
@@ -126,14 +126,14 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
           {/* Error Alert */}
           {(validationError || apiError) && (
             <div className="flex items-start gap-2.5 rounded-xl bg-red-500/10 p-3 ring-1 ring-red-500/30">
-              <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
-              <span className="text-xs text-red-300">{validationError || apiError}</span>
+              <AlertCircle className="h-4 w-4 shrink-0 text-red-500 dark:text-red-400 mt-0.5" />
+              <span className="text-xs text-red-600 dark:text-red-300">{validationError || apiError}</span>
             </div>
           )}
 
           {/* Group Name Input */}
           <div>
-            <label htmlFor="groupName" className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+            <label htmlFor="groupName" className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
               Group Name
             </label>
             <input
@@ -144,27 +144,27 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
               disabled={isSubmitting}
-              className="mt-1.5 block w-full rounded-2xl border-0 bg-slate-950/80 py-2.5 px-4 text-xs sm:text-sm text-slate-100 placeholder-slate-500 ring-1 ring-inset ring-slate-800 focus:ring-2 focus:ring-purple-500"
+              className="mt-1.5 block w-full rounded-2xl border-0 bg-slate-100 dark:bg-slate-950/80 py-2.5 px-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
 
           {/* Selected Participants Pills */}
           {selectedUsers.length > 0 && (
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5">
                 Selected Members ({selectedUsers.length})
               </label>
               <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto p-1">
                 {selectedUsers.map((user) => (
                   <span
                     key={user._id}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-purple-600/20 py-1 pl-3 pr-1 text-xs font-medium text-purple-200 ring-1 ring-purple-500/30"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-purple-600/15 dark:bg-purple-600/20 py-1 pl-3 pr-1 text-xs font-medium text-purple-700 dark:text-purple-200 ring-1 ring-purple-500/30"
                   >
                     <span>{user.name}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveSelected(user._id)}
-                      className="rounded-full p-0.5 hover:bg-purple-500/30 hover:text-white"
+                      className="rounded-full p-0.5 hover:bg-purple-500/30 hover:text-purple-900 dark:hover:text-white transition"
                       aria-label={`Remove ${user.name}`}
                     >
                       <X className="h-3 w-3" />
@@ -177,34 +177,34 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
 
           {/* Add Members Search Section */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
               Add Members
             </label>
             <div className="relative mt-1.5">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-slate-400" />
               <input
                 type="text"
                 placeholder="Search users to add to group..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 disabled={isSubmitting}
-                className="w-full rounded-2xl bg-slate-950/80 py-2 pl-9 pr-3 text-xs text-slate-100 placeholder-slate-500 ring-1 ring-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full rounded-2xl bg-slate-100 dark:bg-slate-950/80 py-2 pl-9 pr-3 text-base sm:text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
 
-            {/* User Search Results */}
-            <div className="mt-2 max-h-48 overflow-y-auto rounded-2xl bg-slate-950/40 p-1 ring-1 ring-white/5 space-y-1">
+            {/* User Search Results Container */}
+            <div className="mt-2 max-h-48 overflow-y-auto rounded-2xl bg-slate-50 dark:bg-slate-950/40 p-1.5 ring-1 ring-slate-200 dark:ring-white/5 space-y-1">
               {isSearchLoading ? (
-                <div className="flex items-center justify-center p-4 text-xs text-slate-400">
-                  <Loader2 className="h-4 w-4 animate-spin text-purple-400 mr-2" />
+                <div className="flex items-center justify-center p-4 text-xs text-slate-500 dark:text-slate-400">
+                  <Loader2 className="h-4 w-4 animate-spin text-purple-600 dark:text-purple-400 mr-2" />
                   Searching users...
                 </div>
               ) : query.trim() === '' ? (
-                <div className="p-4 text-center text-xs text-slate-500">
+                <div className="p-4 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
                   Type a name or phone number to search for members.
                 </div>
               ) : results.length === 0 ? (
-                <div className="p-4 text-center text-xs text-slate-400">
+                <div className="p-4 text-center text-xs text-slate-500 dark:text-slate-400">
                   No users found matching &quot;{query}&quot;.
                 </div>
               ) : (
@@ -217,28 +217,28 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
                       key={user._id}
                       type="button"
                       onClick={() => handleToggleUser(user)}
-                      className={`flex w-full items-center justify-between rounded-xl p-2 text-left transition ${
+                      className={`flex w-full items-center justify-between rounded-xl p-2.5 text-left transition ${
                         isSelected
-                          ? 'bg-purple-600/20 text-purple-200 ring-1 ring-purple-500/30'
-                          : 'hover:bg-slate-800/60 text-slate-300'
+                          ? 'bg-purple-600/15 dark:bg-purple-600/20 text-purple-900 dark:text-purple-200 ring-1 ring-purple-500/30'
+                          : 'hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-slate-800 dark:text-slate-300'
                       }`}
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-600/20 text-xs font-bold text-purple-300 ring-1 ring-purple-500/30">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-600/20 text-xs font-bold text-purple-700 dark:text-purple-300 ring-1 ring-purple-500/30">
                           {initials}
                         </div>
                         <div className="flex flex-col min-w-0">
-                          <span className="truncate text-xs font-semibold">{user.name}</span>
-                          <span className="truncate text-[11px] text-slate-400">{user.phone}</span>
+                          <span className="truncate text-xs font-semibold text-slate-900 dark:text-slate-100">{user.name}</span>
+                          <span className="truncate text-[11px] text-slate-500 dark:text-slate-400">{user.phone}</span>
                         </div>
                       </div>
 
                       {isSelected ? (
-                        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-600 text-white">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-600 text-white shadow-sm">
                           <Check className="h-3 w-3" />
                         </div>
                       ) : (
-                        <div className="flex h-5 w-5 items-center justify-center rounded-md border border-slate-700 text-slate-400">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-md border border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-500">
                           <Plus className="h-3 w-3" />
                         </div>
                       )}
@@ -254,7 +254,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({
             <button
               type="submit"
               disabled={isSubmitting || selectedUsers.length < 2 || !groupName.trim()}
-              className="flex w-full items-center justify-center rounded-2xl bg-purple-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg transition duration-150 hover:bg-purple-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex w-full items-center justify-center rounded-2xl bg-purple-600 px-4 py-3 text-xs sm:text-sm font-semibold text-white shadow-lg transition duration-150 hover:bg-purple-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">

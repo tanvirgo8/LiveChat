@@ -321,6 +321,7 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
 
       {selectedConversation && selectedConversation.type === 'group' && (
         <GroupInfoDrawer
+          key={selectedConversation._id}
           isOpen={isGroupInfoOpen}
           onClose={() => setIsGroupInfoOpen(false)}
           groupConversation={selectedConversation}

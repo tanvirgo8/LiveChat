@@ -121,13 +121,13 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
             {selectedUsers.map((u) => (
               <span
                 key={u._id}
-                className="inline-flex items-center gap-1.5 rounded-full bg-indigo-900/60 px-3 py-1 text-xs font-semibold text-indigo-200 ring-1 ring-indigo-500/30"
+                className="inline-flex items-center gap-1.5 rounded-full bg-indigo-600/15 dark:bg-indigo-900/60 px-3 py-1 text-xs font-semibold text-indigo-800 dark:text-indigo-200 ring-1 ring-indigo-500/30"
               >
                 <span>{u.name}</span>
                 <button
                   type="button"
                   onClick={() => toggleSelectUser(u)}
-                  className="rounded-full p-0.5 hover:bg-indigo-700/50"
+                  className="rounded-full p-0.5 hover:bg-indigo-500/30 hover:text-indigo-950 dark:hover:text-white transition"
                   aria-label={`Remove ${u.name}`}
                 >
                   <X className="h-3 w-3" />
@@ -139,21 +139,21 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
 
         {/* Search Input */}
         <div className="relative mt-4">
-          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search users to add..."
-            className="w-full rounded-2xl bg-slate-950 py-2.5 pl-10 pr-4 text-xs sm:text-sm text-slate-100 placeholder-slate-500 ring-1 ring-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full rounded-2xl bg-slate-100 dark:bg-slate-950 py-2.5 pl-10 pr-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 ring-1 ring-slate-200 dark:ring-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             autoFocus
           />
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-3 flex items-center gap-2 rounded-xl bg-red-500/10 p-3 text-xs text-red-300 ring-1 ring-red-500/20">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <div className="mt-3 flex items-center gap-2 rounded-xl bg-red-500/10 p-3 text-xs text-red-600 dark:text-red-300 ring-1 ring-red-500/20">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-500 dark:text-red-400" />
             <span>{error}</span>
           </div>
         )}
@@ -161,14 +161,14 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
         {/* Search Results List */}
         <div className="mt-4 max-h-60 overflow-y-auto space-y-1">
           {isSearching ? (
-            <div className="flex items-center justify-center py-8 text-xs text-slate-400 gap-2">
-              <Loader2 className="h-4 w-4 animate-spin text-indigo-400" />
+            <div className="flex items-center justify-center py-8 text-xs text-slate-500 dark:text-slate-400 gap-2">
+              <Loader2 className="h-4 w-4 animate-spin text-indigo-500 dark:text-indigo-400" />
               <span>Searching users...</span>
             </div>
           ) : searchError ? (
-            <p className="py-6 text-center text-xs text-red-400">{searchError}</p>
+            <p className="py-6 text-center text-xs text-red-500 dark:text-red-400">{searchError}</p>
           ) : availableResults.length === 0 ? (
-            <p className="py-6 text-center text-xs text-slate-500">
+            <p className="py-6 text-center text-xs text-slate-500 dark:text-slate-400">
               {query.trim() ? 'No new users found.' : 'Type a name or phone number to search.'}
             </p>
           ) : (
@@ -180,21 +180,25 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
                   type="button"
                   onClick={() => toggleSelectUser(u)}
                   className={`flex w-full items-center justify-between rounded-2xl p-3 text-left transition ${
-                    isSelected ? 'bg-indigo-950/60 ring-1 ring-indigo-500/40' : 'hover:bg-slate-800/60'
+                    isSelected
+                      ? 'bg-indigo-600/15 dark:bg-indigo-950/60 ring-1 ring-indigo-500/40 text-indigo-900 dark:text-indigo-200'
+                      : 'hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-900 dark:text-slate-100'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-600/20 text-xs font-bold text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/30">
                       {getInitials(u.name)}
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-100">{u.name}</p>
-                      <p className="text-[11px] text-slate-400">{u.phone}</p>
+                      <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{u.name}</p>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">{u.phone}</p>
                     </div>
                   </div>
                   <div
                     className={`flex h-5 w-5 items-center justify-center rounded-lg border ${
-                      isSelected ? 'border-indigo-500 bg-indigo-600 text-white' : 'border-slate-700 bg-slate-800'
+                      isSelected
+                        ? 'border-indigo-500 bg-indigo-600 text-white shadow-sm'
+                        : 'border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
                     }`}
                   >
                     {isSelected && <Check className="h-3.5 w-3.5" />}
@@ -206,11 +210,11 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
         </div>
 
         {/* Actions Footer */}
-        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-800 pt-4">
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-200 dark:border-slate-800 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-400 hover:bg-slate-800 hover:text-white transition"
+            className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition"
           >
             Cancel
           </button>
@@ -218,7 +222,7 @@ export const AddMembersModal: React.FC<AddMembersModalProps> = ({
             type="button"
             onClick={handleSubmit}
             disabled={selectedUsers.length === 0 || isSubmitting}
-            className="flex items-center gap-2 rounded-2xl bg-indigo-600 px-5 py-2 text-xs font-semibold text-white shadow-lg transition hover:bg-indigo-500 disabled:opacity-40"
+            className="flex items-center gap-2 rounded-2xl bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-indigo-500 disabled:opacity-40"
           >
             {isSubmitting ? (
               <>

@@ -20,9 +20,14 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Prevent iOS auto-zoom on input focus on mobile devices */
+/* Prevent iOS auto-zoom on input focus on mobile devices & fix WebKit textarea cursor alignment */
 @media (max-width: 639px) {
   input, textarea, select {
     font-size: 16px !important;
   }
+}
+
+textarea {
+  line-height: 1.35;
+  -webkit-text-size-adjust: 100%;
 }

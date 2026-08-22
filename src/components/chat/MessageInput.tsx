@@ -119,7 +119,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
             onKeyDown={handleKeyDown}
             placeholder={placeholderText}
             disabled={isDisabled || isSubmitting}
-            className="block w-full resize-none bg-transparent py-3 pl-4 pr-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none disabled:opacity-50 max-h-32 min-h-[44px]"
+            className="block w-full resize-none bg-transparent py-2.5 sm:py-3 pl-4 pr-4 text-base sm:text-sm leading-snug text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none disabled:opacity-50 max-h-32 min-h-[44px] box-border"
             aria-label="Write a message"
           />
         </div>

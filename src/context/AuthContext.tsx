@@ -72,7 +72,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (phone: string, name: string) => {
     setError(null);
-    setIsLoading(true);
 
     try {
       const payload: LoginRequest = { phone, name };
@@ -86,13 +85,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setToken(newToken);
       setUser(loggedInUser);
-      router.push('/chat');
+      router.replace('/chat');
     } catch (err) {
       const msg = getErrorMessage(err);
       setError(msg);
       throw err;
-    } finally {
-      setIsLoading(false);
     }
   };
 

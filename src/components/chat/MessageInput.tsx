@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, Loader2, AlertCircle, X } from 'lucide-react';
+import { EmojiPicker } from './EmojiPicker';
 
 interface MessageInputProps {
   onSendMessage?: (text: string) => Promise<void>;
@@ -47,6 +48,28 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  const handleSelectEmoji = (emoji: string) => {
+    setText((prev) => prev + emoji);
+    if (error) setError(null);
+  };
+
+  const handleSelectSticker = async (stickerText: string) => {
+    if (isDisabled || isSubmitting || !onSendMessage) return;
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await onSendMessage(stickerText);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unable to send sticker. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const isSendDisabled = !text.trim() || isDisabled || isSubmitting;
 
   return (
@@ -69,7 +92,15 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex items-end gap-2.5">
+      <form onSubmit={handleSubmit} className="flex items-end gap-2 sm:gap-2.5">
+        {/* Emoji & Sticker Picker Popover Trigger */}
+        <EmojiPicker
+          onSelectEmoji={handleSelectEmoji}
+          onSelectSticker={handleSelectSticker}
+          isDisabled={isDisabled || isSubmitting}
+        />
+
+        {/* Input Textarea Container */}
         <div className="relative flex flex-1 items-center rounded-2xl bg-slate-100 dark:bg-slate-950/80 ring-1 ring-slate-200 dark:ring-slate-800 transition focus-within:bg-white dark:focus-within:bg-slate-950 focus-within:ring-2 focus-within:ring-indigo-500/80 focus-within:shadow-[0_0_25px_-5px_rgba(99,102,241,0.3)]">
           <textarea
             rows={1}
@@ -86,6 +117,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSendDisabled}

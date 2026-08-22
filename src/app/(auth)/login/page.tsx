@@ -15,8 +15,9 @@ export default function LoginPage() {
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Redirect if already authenticated
+  // Prefetch /chat route for fast instant navigation & redirect if already authenticated
   useEffect(() => {
+    router.prefetch('/chat');
     if (!isAuthLoading && isAuthenticated) {
       router.replace('/chat');
     }
@@ -44,9 +45,9 @@ export default function LoginPage() {
 
     try {
       await login(trimmedPhone, trimmedName);
+      // Keep isSubmitting true on success during page transition to /chat
     } catch {
       // Error stored in apiError by AuthContext
-    } finally {
       setIsSubmitting(false);
     }
   };

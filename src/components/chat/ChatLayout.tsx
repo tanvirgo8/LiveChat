@@ -40,10 +40,24 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
   onRemoveConversation,
   onLogout,
 }) => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Initialize active conversation & mobile view state from localStorage if available
+  const [selectedId, setSelectedId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('livechat_active_conv_id') || null;
+    }
+    return null;
+  });
 
   // Mobile View Navigation State: 'list' (Sidebar) or 'chat' (Active Chat Panel)
-  const [activeMobileView, setActiveMobileView] = useState<'list' | 'chat'>('list');
+  const [activeMobileView, setActiveMobileView] = useState<'list' | 'chat'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedView = localStorage.getItem('livechat_mobile_view');
+      if (savedView === 'chat' || savedView === 'list') {
+        return savedView;
+      }
+    }
+    return 'list';
+  });
 
   // Modals state
   const [isNewChatOpen, setIsNewChatOpen] = useState(false);
@@ -127,10 +141,17 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
   const handleSelectConversation = (id: string) => {
     setSelectedId(id);
     setActiveMobileView('chat');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('livechat_active_conv_id', id);
+      localStorage.setItem('livechat_mobile_view', 'chat');
+    }
   };
 
   const handleBackMobile = () => {
     setActiveMobileView('list');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('livechat_mobile_view', 'list');
+    }
   };
 
   // Start 1-to-1 chat handler from UserSearchModal
@@ -139,6 +160,10 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
     if (createdOrFound) {
       setSelectedId(createdOrFound._id);
       setActiveMobileView('chat');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('livechat_active_conv_id', createdOrFound._id);
+        localStorage.setItem('livechat_mobile_view', 'chat');
+      }
     }
   };
 
@@ -148,6 +173,10 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
     if (newGroup) {
       setSelectedId(newGroup._id);
       setActiveMobileView('chat');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('livechat_active_conv_id', newGroup._id);
+        localStorage.setItem('livechat_mobile_view', 'chat');
+      }
     }
   };
 

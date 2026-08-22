@@ -70,6 +70,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  const [placeholderText] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 640) {
+      return 'Write a message... (Press Enter to send)';
+    }
+    return 'Write a message...';
+  });
+
   const isSendDisabled = !text.trim() || isDisabled || isSubmitting;
 
   return (
@@ -110,7 +117,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
               if (error) setError(null);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Write a message... (Press Enter to send)"
+            placeholder={placeholderText}
             disabled={isDisabled || isSubmitting}
             className="block w-full resize-none bg-transparent py-3 pl-4 pr-4 text-base sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none disabled:opacity-50 max-h-32 min-h-[44px]"
             aria-label="Write a message"

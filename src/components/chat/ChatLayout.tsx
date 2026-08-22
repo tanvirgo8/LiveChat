@@ -291,6 +291,7 @@ export const ChatLayout: React.FC<ChatLayoutProps> = ({
           conversation={selectedConversation}
           messages={messages}
           currentUserId={currentUserId}
+          isLoadingConversations={isLoadingConversations}
           isLoadingMessages={isLoadingMessages}
           isLoadingOlderMessages={isLoadingOlderMessages}
           hasMoreMessages={hasMoreMessages}

@@ -38,7 +38,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         return (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500/20">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-            Live Realtime
+            Live
           </span>
         );
       case 'connecting':

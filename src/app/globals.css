@@ -20,14 +20,20 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Prevent iOS auto-zoom on input focus on mobile devices & fix WebKit textarea cursor alignment */
+/* Prevent iOS auto-zoom & normalize mobile WebKit textarea caret vertical position */
 @media (max-width: 639px) {
   input, textarea, select {
     font-size: 16px !important;
   }
+
+  textarea {
+    line-height: 24px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
 }
 
 textarea {
-  line-height: 1.35;
   -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
 }

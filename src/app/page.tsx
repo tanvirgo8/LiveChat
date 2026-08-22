@@ -20,10 +20,10 @@ export default function Home() {
   }, [isAuthenticated, isLoading, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <div className="flex flex-col items-center gap-3 text-center">
-        <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
-        <p className="text-sm font-medium text-slate-400">Loading LiveChat...</p>
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-600 dark:text-indigo-500" />
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Loading LiveChat...</p>
       </div>
     </div>
   );
